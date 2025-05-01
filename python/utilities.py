@@ -4,7 +4,7 @@ from os import system
 def shutdown():
     ret = 0
     if platform == "linux":
-        ret = system("sleep 10; poweroff")
+        ret = system("(sleep 10; poweroff)&")
     elif platform == "win32":
         ret = system("shutdown /s /t 10")
     else
@@ -15,7 +15,7 @@ def shutdown():
 def reboot():
     ret = 0
     if platform == "linux":
-        ret = system("sleep 10; reboot")
+        ret = system("(sleep 10; reboot)&")
     elif platform == "win32":
         ret = system("shutdown /r /t 10")
     else
