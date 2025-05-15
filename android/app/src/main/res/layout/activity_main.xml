@@ -4,7 +4,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/custom_turquoise">
 
     <TextView
         android:id="@+id/title"
@@ -13,18 +21,25 @@
         android:text="Lab Control"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp" />
+        android:layout_gravity="start|center_vertical" />
 
-    <Button
-        android:id="@+id/availablePCs"
-        android:layout_width="wrap_content"
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pcInfo"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scan Available PCs"
-        android:textSize="15sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="50dp" />
+        android:padding="16dp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/availablePCs"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Scan Available PCs"-->
+<!--        android:textSize="15sp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_below="@+id/title"-->
+<!--        android:layout_marginTop="50dp" />-->
 
 </RelativeLayout>
