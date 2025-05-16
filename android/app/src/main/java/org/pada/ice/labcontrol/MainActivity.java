@@ -5,6 +5,7 @@ import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.content.Intent;
 import java.util.ArrayList;
 
 import androidx.activity.EdgeToEdge;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
+        menuInflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menu_scan) {
             Toast.makeText(this, "Scan clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ScanActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_about) {
             Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show();
