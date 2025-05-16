@@ -4,13 +4,14 @@ public class PCInfo {
     public String name;
     public String ip;
     public String mac;
-
+    public String operatingSystem;
     public boolean status;
 
-    public PCInfo(String name, String ip, String mac, boolean status){
+    public PCInfo(String name, String ip, String mac, boolean status, String operatingSystem){
         this.name = name;
         this.ip = ip;
         this.mac = mac;
+        this.operatingSystem = operatingSystem;
         this.status = status;
     }
 }
