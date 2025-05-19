@@ -46,6 +46,7 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
             String[] options = {"Restart", "Shutdown", "Restore", "WOL"};
             builder.setItems(options, (dialog, which) -> {
                 String optionClicked = options[which];
+                //switch
                 Toast.makeText(clicked.getContext(), optionClicked + " selected for PC: " + pc.name, Toast.LENGTH_SHORT).show();
             });
 

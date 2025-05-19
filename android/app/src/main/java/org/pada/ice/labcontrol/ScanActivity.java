@@ -1,11 +1,25 @@
 package org.pada.ice.labcontrol;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class ScanActivity extends AppCompatActivity {
+    private RecyclerView scanRecyclerView;
+    private ArrayList<PCInfo> scannedPcList;
+    private PCScanAdapter pcScanAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,5 +35,43 @@ public class ScanActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        //RecyclerView
+        scanRecyclerView = findViewById(R.id.scanRecyclerView);
+        scanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //Data testing
+        scannedPcList = new ArrayList<>();
+        scannedPcList.add(new PCInfo("192.168.1.1", "11:22:33:44:55:66"));
+        scannedPcList.add(new PCInfo("192.168.1.2", "00:22:33:44:55:66"));
+        scannedPcList.add(new PCInfo("192.168.1.3", "11:22:33:44:55:77"));
+
+        pcScanAdapter = new PCScanAdapter(scannedPcList);
+        scanRecyclerView.setAdapter(pcScanAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.scan_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.scan_menu_select_all) {
+            Toast.makeText(this, "Select All clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.scan_menu_subnet) {
+            Toast.makeText(this, "Subnet clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ScanActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.scan_menu_add) {
+            Toast.makeText(this, "Add clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

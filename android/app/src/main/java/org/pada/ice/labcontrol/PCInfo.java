@@ -14,4 +14,9 @@ public class PCInfo {
         this.operatingSystem = operatingSystem;
         this.status = status;
     }
+
+    public PCInfo(String ip, String mac){
+        this.ip = ip;
+        this.mac = mac;
+    }
 }

@@ -2,20 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/main_menu_add"
-        android:title="Add"
+        android:id="@+id/scan_menu_select_all"
+        android:title="Select All"
         android:orderInCategory="1"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        app:iconTint="@color/custom_turquoise"/>
 
     <item
-        android:id="@+id/main_menu_scan"
-        android:title="Scan"
+        android:id="@+id/scan_menu_subnet"
+        android:title="Subnet"
         android:orderInCategory="2"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/main_menu_about"
-        android:title="About"
+        android:id="@+id/scan_menu_add"
+        android:title="Add"
         android:orderInCategory="3"
         app:showAsAction="never" />
 </menu>
