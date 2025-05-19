@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ public class ScanActivity extends AppCompatActivity {
     private RecyclerView scanRecyclerView;
     private ArrayList<PCInfo> scannedPcList;
     private PCScanAdapter pcScanAdapter;
+    private boolean allSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +30,15 @@ public class ScanActivity extends AppCompatActivity {
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.getOverflowIcon().setTint(ContextCompat.getColor(this, R.color.custom_turquoise));
 
         //Title appearing only once
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow);
         }
+
 
         //RecyclerView
         scanRecyclerView = findViewById(R.id.scanRecyclerView);
@@ -49,6 +54,7 @@ public class ScanActivity extends AppCompatActivity {
         scanRecyclerView.setAdapter(pcScanAdapter);
     }
 
+    //Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
@@ -60,15 +66,37 @@ public class ScanActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if (id == R.id.scan_menu_select_all) {
-            Toast.makeText(this, "Select All clicked", Toast.LENGTH_SHORT).show();
+            allSelected = !allSelected;
+            pcScanAdapter.selectAll(allSelected);
+
+            String message;
+            if (allSelected) {
+                message = "All PCs selected";
+            } else {
+                message = "All PCs cleared";
+            }
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             return true;
+
         } else if (id == R.id.scan_menu_subnet) {
             Toast.makeText(this, "Subnet clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ScanActivity.class);
             startActivity(intent);
             return true;
+
         } else if (id == R.id.scan_menu_add) {
             Toast.makeText(this, "Add clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            Toast.makeText(this, "Back arrow clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (item.getItemId() == R.id.refresh) {
+            Toast.makeText(this, "Refresh clicked", Toast.LENGTH_SHORT).show();
             return true;
         }
 
