@@ -7,7 +7,7 @@ def shutdown():
         ret = system("(sleep 10; poweroff)&")
     elif platform == "win32":
         ret = system("shutdown /s /t 10")
-    else
+    else:
         raise Exception(f"unable to poweroff: unsupported platform {platform}")
     if ret:
         raise Exception(f"unable to poweroff: return value {ret}")
@@ -18,7 +18,7 @@ def reboot():
         ret = system("(sleep 10; reboot)&")
     elif platform == "win32":
         ret = system("shutdown /r /t 10")
-    else
+    else:
         raise Exception(f"unable to reboot: unsupported platform {platform}")
     if ret:
         raise Exception(f"unable to reboot: return value {ret}")
