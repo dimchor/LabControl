@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScanActivity"/>
+        <activity android:name=".AddPCActivity"/>
     </application>
 
 </manifest>

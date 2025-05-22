@@ -10,11 +10,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
 
 public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
-    private List<PCInfo> pcList;
-    public PCAdapter(List<PCInfo> pcList){
+    private PCList pcList;
+    public PCAdapter(PCList pcList){
         this.pcList = pcList;
     }
 
@@ -46,7 +51,39 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
             String[] options = {"Restart", "Shutdown", "Restore", "WOL"};
             builder.setItems(options, (dialog, which) -> {
                 String optionClicked = options[which];
-                Toast.makeText(clicked.getContext(), optionClicked + " selected for PC: " + pc.name, Toast.LENGTH_SHORT).show();
+
+                if (optionClicked.equals("WOL")) {
+                    Toast.makeText(clicked.getContext(), pc.name + ": NOT IMPLEMENTED", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String response;
+                try (var socket = new Socket(pc.ip, 47001);
+                     var writer = new PrintWriter(socket.getOutputStream(), true);
+                     var reader = new BufferedReader(new InputStreamReader(socket.getInputStream())))
+                {
+                    switch (optionClicked) {
+                        case "Shutdown":
+                            writer.println("shutdown");
+                            break;
+                        case "Restart":
+                            writer.println("reboot");
+                            break;
+                        case "Restore":
+                            writer.println("restore");
+                            break;
+                        default:
+                    }
+
+                    response = reader.readLine();
+                }
+                catch (Exception e)
+                {
+                    response = e.getMessage();
+                }
+
+//                Toast.makeText(clicked.getContext(), optionClicked + " selected for PC: " + pc.name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(clicked.getContext(), pc.name + ": " + response, Toast.LENGTH_SHORT).show();
             });
 
             builder.setNegativeButton("Cancel", (dialog, which) -> {

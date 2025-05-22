@@ -1,26 +1,34 @@
 package org.pada.ice.labcontrol;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
 import java.util.ArrayList;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView pcRecyclerView;
-    private ArrayList<PCInfo> pcList;
     private PCAdapter pcAdapter;
 
     @Override
@@ -33,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        var window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.custom_turquoise));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            var controller = getWindow().getInsetsController();
+            assert controller != null;
+            controller.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
+        }
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -48,12 +67,10 @@ public class MainActivity extends AppCompatActivity {
         pcRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Data testing
-        pcList = new ArrayList<>();
-        pcList.add(new PCInfo("PC1", "192.168.1.1", "11:22:33:44:55:66", true, "Linux"));
-        pcList.add(new PCInfo("PC2", "192.168.1.2", "00:22:33:44:55:66", false, "Windows10"));
-        pcList.add(new PCInfo("PC3", "192.168.1.3", "11:22:33:44:55:77", false, "Windows7"));
+        var pcListHandle = PCList.getInstance();
+        pcListHandle.add(new PCInfo("PC1", "192.168.1.1", "11:22:33:44:55:66", true, "Linux"));
 
-        pcAdapter = new PCAdapter(pcList);
+        pcAdapter = new PCAdapter(pcListHandle);
         pcRecyclerView.setAdapter(pcAdapter);
     }
 
@@ -68,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if (id == R.id.menu_add) {
-            Toast.makeText(this, "Add clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AddPCActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_scan) {
             Toast.makeText(this, "Scan clicked", Toast.LENGTH_SHORT).show();
@@ -82,4 +100,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
