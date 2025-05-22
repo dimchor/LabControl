@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
         pcRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Data testing
-        var pcListHandle = PCList.getInstance();
-        pcListHandle.add(new PCInfo("PC1", "192.168.1.1", "11:22:33:44:55:66", true, "Linux"));
+//        var pcListHandle = PCList.getInstance();
+//        pcListHandle.add(new PCInfo("PC1", "192.168.1.1", "11:22:33:44:55:66", true, "Linux"));
 
-        pcAdapter = new PCAdapter(pcListHandle);
+        pcAdapter = new PCAdapter();
         pcRecyclerView.setAdapter(pcAdapter);
     }
 
@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_add) {
             Intent intent = new Intent(this, AddPCActivity.class);
             startActivity(intent);
+            recreate();
             return true;
         } else if (id == R.id.menu_scan) {
             Toast.makeText(this, "Scan clicked", Toast.LENGTH_SHORT).show();

@@ -25,11 +25,33 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pcRecyclerView"
-        android:layout_below="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:layout_height="667dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="0dp">
+
+        <Button
+            android:id="@+id/buttonAddPC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/custom_turquoise"
+            android:text="Add"
+            android:textColor="@color/custom_black"
+            app:layout_constraintTop_toBottomOf="@+id/editTextInternetProtocolAddress"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editTextInternetProtocolAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="IP Address"
+            android:inputType="text"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="16dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

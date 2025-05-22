@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,7 +32,16 @@ public class AddPCActivity extends AppCompatActivity {
             controller.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
         }
 
-
+        Button button = (Button) findViewById(R.id.buttonAddPC);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                var ipAddress = (EditText) findViewById(R.id.editTextInternetProtocolAddress);
+                String content = ipAddress.getText().toString();
+                PCList.getInstance().add(new PCInfo("name", content, "mac", true, "unk"));
+                Toast.makeText(v.getContext(), "clicked" + PCList.getInstance().size(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
