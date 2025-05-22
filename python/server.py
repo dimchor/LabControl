@@ -1,5 +1,9 @@
 import socket
 import platform
+from utilities import (
+    shutdown,
+    reboot
+)
 
 HOST = ""
 PORT = 47001
@@ -11,6 +15,20 @@ def choose(option: str) -> str:
             hostname = socket.gethostname()
             system = platform.system()
             return f"{hostname} - {system}"
+        case "shutdown":
+            try:
+                shutdown()
+            except Exception as e:
+                print("[Exception]", e)
+                return e
+            return "Shutting down..."
+        case "reboot":
+            try:
+                reboot()
+            except Exception as e:
+                print("[Exception]", e)
+                return e
+            return "Rebooting..."
         case _:
             pass
     return "unknown"
