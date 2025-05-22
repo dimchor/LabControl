@@ -2,6 +2,7 @@ package org.pada.ice.labcontrol;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
@@ -53,29 +54,20 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
                     return;
                 }
 
-                String response;
-                try (var socket = new Socket(pc.ip, 47001);
-                     var writer = new PrintWriter(socket.getOutputStream(), true);
-                     var reader = new BufferedReader(new InputStreamReader(socket.getInputStream())))
-                {
-                    switch (optionClicked) {
-                        case "Shutdown":
-                            writer.println("shutdown");
-                            break;
-                        case "Restart":
-                            writer.println("reboot");
-                            break;
-                        case "Restore":
-                            writer.println("restore");
-                            break;
-                        default:
-                    }
+                String response = null;
+                Log.println(Log.INFO, "", "i'm here");
 
-                    response = reader.readLine();
-                }
-                catch (Exception e)
-                {
-                    response = e.getMessage();
+                switch (optionClicked) {
+                    case "Shutdown":
+                        response = PCOption.shutdown(pc.ip);
+                        break;
+                    case "Restart":
+                        response = PCOption.reboot(pc.ip);
+                        break;
+                    case "Restore":
+                        response = PCOption.restore(pc.ip);
+                        break;
+                    default:
                 }
 
 //                Toast.makeText(clicked.getContext(), optionClicked + " selected for PC: " + pc.name, Toast.LENGTH_SHORT).show();
