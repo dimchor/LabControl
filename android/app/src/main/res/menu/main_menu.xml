@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_add"
+        android:id="@+id/main_menu_add"
         android:title="Add"
         android:orderInCategory="1"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_scan"
+        android:id="@+id/main_menu_scan"
         android:title="Scan"
         android:orderInCategory="2"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_about"
+        android:id="@+id/main_menu_about"
         android:title="About"
         android:orderInCategory="3"
         app:showAsAction="never" />

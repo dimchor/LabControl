@@ -29,7 +29,8 @@
         android:id="@+id/pcRecyclerView"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:clipToPadding="false"/>
 
 </RelativeLayout>

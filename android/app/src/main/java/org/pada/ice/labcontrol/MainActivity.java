@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             recreate();
             return true;
-        } else if (id == R.id.menu_scan) {
+        } else if (id == R.id.main_menu_scan) {
             Toast.makeText(this, "Scan clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ScanActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.menu_about) {
+        } else if (id == R.id.main_menu_about) {
             Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show();
             return true;
         }
