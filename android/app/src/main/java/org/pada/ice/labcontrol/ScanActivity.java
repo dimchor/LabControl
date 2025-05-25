@@ -85,7 +85,19 @@ public class ScanActivity extends AppCompatActivity {
             return true;
 
         } else if (id == R.id.scan_menu_add) {
-            Toast.makeText(this, "Add clicked", Toast.LENGTH_SHORT).show();
+            ArrayList<PCInfo> selectedPCs = new ArrayList<>(pcScanAdapter.getSelectedPCs());
+
+            if (selectedPCs.isEmpty()) {
+                Toast.makeText(this, "No PCs selected", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            //Add the selected PCs to the global list
+            PCList.getInstance().addAll(selectedPCs);
+
+            //Remove the selected PCs from the scan list
+            scannedPcList.removeAll(selectedPCs);
+            pcScanAdapter.notifyDataSetChanged();
             return true;
         }
 

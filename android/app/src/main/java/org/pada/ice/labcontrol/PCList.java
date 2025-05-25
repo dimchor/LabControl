@@ -13,10 +13,14 @@ public class PCList {
         return instance;
     }
 
-    final private ArrayList<PCInfo> pcList = new ArrayList<PCInfo>();
+    final private ArrayList<PCInfo> pcList = new ArrayList<>();
 
     public void add(PCInfo pcInfo) {
         pcList.add(pcInfo);
+    }
+
+    public void addAll(ArrayList<PCInfo> pcs) {
+        pcList.addAll(pcs);
     }
 
     public PCInfo get(int position) {
@@ -25,5 +29,9 @@ public class PCList {
 
     public int size() {
         return pcList.size();
+    }
+
+    public ArrayList<PCInfo> getList(){
+        return pcList;
     }
 }

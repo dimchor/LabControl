@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 //        var pcListHandle = PCList.getInstance();
 //        pcListHandle.add(new PCInfo("PC1", "192.168.1.1", "11:22:33:44:55:66", true, "Linux"));
 
-        pcAdapter = new PCAdapter();
+        pcAdapter = new PCAdapter(PCList.getInstance().getList());
         pcRecyclerView.setAdapter(pcAdapter);
     }
 
@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pcAdapter.notifyDataSetChanged();
     }
 
 }

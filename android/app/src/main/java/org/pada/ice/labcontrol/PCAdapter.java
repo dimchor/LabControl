@@ -20,6 +20,11 @@ import java.util.List;
 
 public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
+    private List<PCInfo> pcList;
+    public PCAdapter(List<PCInfo> pcList) {
+        this.pcList = pcList;
+    }
+
     @Override
     public PCViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pc_info, parent, false);
@@ -28,7 +33,7 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
     @Override
     public void onBindViewHolder(PCViewHolder holder, int position){
-        PCInfo pc = PCList.getInstance().get(position);
+        PCInfo pc = pcList.get(position);
         holder.textViewName.setText("Name: " + pc.name);
         holder.textViewIP.setText("IP: " + pc.ip);
         holder.textViewMAC.setText("MAC: " + pc.mac);
@@ -86,7 +91,7 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
     @Override
     public int getItemCount(){
-        return PCList.getInstance().size();
+        return pcList.size();
     }
 
     public static class PCViewHolder extends RecyclerView.ViewHolder{
