@@ -95,6 +95,9 @@ public class ScanActivity extends AppCompatActivity {
             //Add the selected PCs to the global list
             PCList.getInstance().addAll(selectedPCs);
 
+            //Save the file
+            PCStoreInfo.saveToFile(this, PCList.getInstance().getList());
+
             //Remove the selected PCs from the scan list
             scannedPcList.removeAll(selectedPCs);
             pcScanAdapter.notifyDataSetChanged();

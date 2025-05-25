@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
@@ -50,12 +51,28 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
         holder.itemView.setOnClickListener(clicked -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(clicked.getContext());
             builder.setTitle("Options for " + pc.name);
-            String[] options = {"Restart", "Shutdown", "Restore", "WOL"};
+            String[] options = {"Restart", "Shutdown", "Restore", "WOL", "Delete"};
             builder.setItems(options, (dialog, which) -> {
                 String optionClicked = options[which];
 
                 if (optionClicked.equals("WOL")) {
                     Toast.makeText(clicked.getContext(), pc.name + ": NOT IMPLEMENTED", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (optionClicked.equals("Delete")) {
+                    new AlertDialog.Builder(clicked.getContext())
+                            .setTitle("Delete PC")
+                            .setMessage("Are you sure you want to delete the " + pc.name + "?")
+                            .setPositiveButton("Yes", (confirmDialog, confirmWhich) -> {
+                                int deletePosition = holder.getAdapterPosition();
+                                pcList.remove(deletePosition);
+                                notifyItemRemoved(deletePosition);
+                                PCStoreInfo.saveToFile(clicked.getContext(), new ArrayList<>(pcList));
+                                Toast.makeText(clicked.getContext(), "Deleted: " + pc.name, Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
                     return;
                 }
 
