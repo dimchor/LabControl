@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddPCActivity"
     android:fitsSystemWindows="true">
 
@@ -25,22 +27,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="667dp"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="0dp">
-
-        <Button
-            android:id="@+id/buttonAddPC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:backgroundTint="@color/custom_turquoise"
-            android:text="Add"
-            android:textColor="@color/custom_black"
-            app:layout_constraintTop_toBottomOf="@+id/editTextInternetProtocolAddress"
-            tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
 
         <EditText
             android:id="@+id/editTextInternetProtocolAddress"
@@ -50,8 +42,18 @@
             android:ems="10"
             android:hint="IP Address"
             android:inputType="text"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:paddingVertical="12dp"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/buttonAddPC"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp"
+            android:textSize="18sp"
+            android:backgroundTint="@color/custom_turquoise"
+            android:text="Add"
+            android:textColor="@color/custom_black" />
+
+    </LinearLayout>
+
+</LinearLayout>

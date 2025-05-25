@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if (id == R.id.menu_add) {
+        if (id == R.id.main_menu_add) {
             Intent intent = new Intent(this, AddPCActivity.class);
             startActivity(intent);
             recreate();
