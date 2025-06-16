@@ -32,31 +32,33 @@ public class PCOption {
                  var out = new DataOutputStream(socket.getOutputStream());
                  var in = new DataInputStream(socket.getInputStream()))
             {
-                Log.println(Log.INFO, "", "good");
-
                 out.write(command.getBytes(StandardCharsets.UTF_8));
 
-                int length;
-                while ((length = in.readInt()) > 0);
-                byte[] bResponse = new byte[length];
-                in.readFully(bResponse, 0, bResponse.length);
-                response = new String(bResponse);
+                byte[] bResponse = new byte[128];
+                int length = in.read(bResponse, 0, bResponse.length);
+                if (length < 1) {
+                    throw new Exception("empty");
+                }
+                response = new String(bResponse, StandardCharsets.UTF_8);
             }
             catch (Exception e)
             {
-                Log.println(Log.INFO, "", e.toString());
+                e.printStackTrace();
 
-                response = e.toString();
+                response = "error: " + e.toString();
             }
         }
     }
     private static String runCommand(String ip, String command) {
-        Log.println(Log.INFO, "", "i'm here " + ip);
-
         String response;
 
         var thread = new SocketThread(ip, command);
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.println(Log.INFO, "PCOption", e.toString());
+        }
 
         return thread.getResponse();
     }
@@ -71,5 +73,13 @@ public class PCOption {
 
     public static String restore(String ip) {
         return runCommand(ip, "restore");
+    }
+
+    public static String echo(String ip) {
+        return runCommand(ip, "echo");
+    }
+
+    public static String mac(String ip) {
+        return runCommand(ip, "mac");
     }
 }
