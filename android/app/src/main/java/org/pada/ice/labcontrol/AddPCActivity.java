@@ -3,6 +3,7 @@ package org.pada.ice.labcontrol;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowInsetsController;
@@ -36,9 +37,26 @@ public class AddPCActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 var ipAddress = (EditText) findViewById(R.id.editTextInternetProtocolAddress);
-                String content = ipAddress.getText().toString();
-                PCList.getInstance().add(new PCInfo("name", content, "mac", true, "unk"));
-                Toast.makeText(v.getContext(), "clicked" + PCList.getInstance().size(), Toast.LENGTH_SHORT).show();
+                var ipContent = ipAddress.getText().toString();
+                var name = (EditText) findViewById(R.id.editTextName);
+                var nameContent = name.getText().toString();
+                var mac = (EditText) findViewById(R.id.editTextMac);
+                var macContent = mac.getText().toString();
+                var echo = PCOption.echo(ipContent);
+                if (echo.startsWith("error")) {
+                    Toast.makeText(v.getContext(), echo, Toast.LENGTH_SHORT).show();
+                } else {
+                    var echoContent = echo.split("[%]");
+                    PCList.getInstance().add(new PCInfo(
+                            nameContent.isEmpty() ? echoContent[0] : nameContent,
+                            ipContent,
+                            (macContent.isEmpty() && !(echoContent[2].equals("None"))
+                                    ? echoContent[2]
+                                    : macContent),
+                            true,
+                            echoContent[1]));
+                }
+                // Toast.makeText(v.getContext(), "clicked" + PCList.getInstance().size(), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
