@@ -55,10 +55,10 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
             builder.setItems(options, (dialog, which) -> {
                 String optionClicked = options[which];
 
-                if (optionClicked.equals("WOL")) {
-                    Toast.makeText(clicked.getContext(), pc.name + ": NOT IMPLEMENTED", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (optionClicked.equals("WOL")) {
+//                    Toast.makeText(clicked.getContext(), pc.name + ": NOT IMPLEMENTED", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 
                 if (optionClicked.equals("Delete")) {
                     new AlertDialog.Builder(clicked.getContext())
@@ -88,6 +88,10 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
                         break;
                     case "Restore":
                         response = PCOption.restore(pc.ip);
+                        break;
+                    case "WOL":
+                        response = PCOption.wakeOnLan(pc.mac);
+                        Toast.makeText(clicked.getContext(), response, Toast.LENGTH_SHORT).show();
                         break;
                     default:
                 }

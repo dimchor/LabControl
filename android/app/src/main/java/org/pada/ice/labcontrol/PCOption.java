@@ -3,11 +3,14 @@ package org.pada.ice.labcontrol;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
+import io.github.reines.wol.WakeOnLan;
 
 public class PCOption {
 
@@ -71,5 +74,14 @@ public class PCOption {
 
     public static String restore(String ip) {
         return runCommand(ip, "restore");
+    }
+
+    public static String wakeOnLan(String mac){
+        try {
+            WakeOnLan.wake(mac);
+            return "WOL packet sent to " + mac;
+        } catch (Exception e) {
+            return "Failed to send WOL packet: " + e.getMessage();
+        }
     }
 }
