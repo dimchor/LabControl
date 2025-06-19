@@ -45,6 +45,12 @@ public class AddPCActivity extends AppCompatActivity {
                 var echo = PCOption.echo(ipContent);
                 if (echo.startsWith("error")) {
                     Toast.makeText(v.getContext(), echo, Toast.LENGTH_SHORT).show();
+                    PCList.getInstance().add(new PCInfo(
+                            nameContent.isEmpty() ? "unknown" : nameContent,
+                            ipContent,
+                            macContent,
+                            false,
+                            "unknown"));
                 } else {
                     var echoContent = echo.split("[%]");
                     PCList.getInstance().add(new PCInfo(

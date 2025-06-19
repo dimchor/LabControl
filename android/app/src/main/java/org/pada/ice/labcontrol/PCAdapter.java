@@ -67,6 +67,8 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
                             .setPositiveButton("Yes", (confirmDialog, confirmWhich) -> {
                                 int deletePosition = holder.getAdapterPosition();
                                 pcList.remove(deletePosition);
+                                // maybe needed
+//                                PCList.getInstance().remove(deletePosition);
                                 notifyItemRemoved(deletePosition);
                                 PCStoreInfo.saveToFile(clicked.getContext(), new ArrayList<>(pcList));
                                 Toast.makeText(clicked.getContext(), "Deleted: " + pc.name, Toast.LENGTH_SHORT).show();

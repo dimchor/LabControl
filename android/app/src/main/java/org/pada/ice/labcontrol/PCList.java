@@ -18,6 +18,10 @@ public class PCList {
         pcList.add(pcInfo);
     }
 
+    public void remove(int index) {
+        pcList.remove(index);
+    }
+
     public void addAll(ArrayList<PCInfo> pcs) {
         pcList.addAll(pcs);
     }

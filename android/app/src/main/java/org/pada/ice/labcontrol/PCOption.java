@@ -10,7 +10,7 @@ import java.io.DataInputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import io.github.reines.wol.WakeOnLan;
+//import io.github.reines.wol.WakeOnLan;
 
 public class PCOption {
 
@@ -78,13 +78,15 @@ public class PCOption {
         return runCommand(ip, "restore");
     }
 
-    public static String wakeOnLan(String mac){
+    public static String wakeOnLan(String mac) {
         try {
-            WakeOnLan.wake(mac);
+//            WakeOnLan.wake(mac);
             return "WOL packet sent to " + mac;
         } catch (Exception e) {
             return "Failed to send WOL packet: " + e.getMessage();
         }
+    }
+
     public static String echo(String ip) {
         return runCommand(ip, "echo");
     }
