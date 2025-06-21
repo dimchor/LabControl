@@ -45,10 +45,29 @@ public class ScanActivity extends AppCompatActivity {
         scanRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Data testing
-        scannedPcList = new ArrayList<>();
-        scannedPcList.add(new PCInfo("192.168.1.1", "11:22:33:44:55:66"));
-        scannedPcList.add(new PCInfo("192.168.1.2", "00:22:33:44:55:66"));
-        scannedPcList.add(new PCInfo("192.168.1.3", "11:22:33:44:55:77"));
+//        scannedPcList = new ArrayList<>();
+//        scannedPcList.add(new PCInfo("192.168.1.1", "11:22:33:44:55:66"));
+//        scannedPcList.add(new PCInfo("192.168.1.2", "00:22:33:44:55:66"));
+//        scannedPcList.add(new PCInfo("192.168.1.3", "11:22:33:44:55:77"));
+
+
+        try {
+            var scanner = new PCScanner((byte[] raw) -> {
+                var ip = (int)(raw[0] & 0xFF) + "."
+                        + (int)(raw[1] & 0xFF) + "."
+                        + (int)(raw[2] & 0xFF) + "."
+                        + (int)(raw[3] & 0xFF);
+                var echo = PCOption.echo(ip);
+                if (echo.startsWith("error"))
+                    return null;
+                var echoContent = echo.split("[%]");
+                return new PCInfo(echoContent[1], echoContent[2]);
+            });
+            scannedPcList = scanner.populate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         pcScanAdapter = new PCScanAdapter(scannedPcList);
         scanRecyclerView.setAdapter(pcScanAdapter);

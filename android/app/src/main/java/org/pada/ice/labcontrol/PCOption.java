@@ -2,11 +2,9 @@ package org.pada.ice.labcontrol;
 
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -18,6 +16,9 @@ public class PCOption {
         String command;
         String response;
         String ip;
+
+        final static int TIMEOUT = 3;
+        final static int BUFSIZE = 1024;
 
 
         SocketThread(String ip, String command) {
@@ -31,23 +32,25 @@ public class PCOption {
 
         @Override
         public void run() {
-            try (var socket = new Socket(ip, 47001);
-                 var out = new DataOutputStream(socket.getOutputStream());
-                 var in = new DataInputStream(socket.getInputStream()))
-            {
-                out.write(command.getBytes(StandardCharsets.UTF_8));
+            try (var socket = new Socket()) {
+                socket.connect(new InetSocketAddress(ip, 47001), TIMEOUT * 1000); // connect timeout
+                socket.setSoTimeout(TIMEOUT * 1000); // read timeout
 
-                byte[] bResponse = new byte[128];
-                int length = in.read(bResponse, 0, bResponse.length);
-                if (length < 1) {
-                    throw new Exception("empty");
+                try (var out = new DataOutputStream(socket.getOutputStream());
+                     var in = new DataInputStream(socket.getInputStream())) {
+
+                    out.write(command.getBytes(StandardCharsets.UTF_8));
+
+                    byte[] bResponse = new byte[BUFSIZE];
+                    int length = in.read(bResponse, 0, bResponse.length);
+                    if (length < 1) {
+                        throw new Exception("empty");
+                    }
+
+                    response = new String(bResponse, 0, length, StandardCharsets.UTF_8);
                 }
-                response = new String(bResponse, StandardCharsets.UTF_8);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
-
                 response = "error: " + e.toString();
             }
         }
