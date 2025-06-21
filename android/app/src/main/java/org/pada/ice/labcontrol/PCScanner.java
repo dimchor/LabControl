@@ -10,6 +10,16 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class PCScanner {
+
+    Boolean scanning = false;
+
+    private static PCScanner instance = null;
+
+    public static synchronized PCScanner getInstance() throws Exception {
+        if (instance == null)
+            instance = new PCScanner();
+        return instance;
+    }
     private static class NetworkIPSocketThread extends Thread {
         private Pair<Integer, Integer> response;
 
@@ -45,11 +55,8 @@ public class PCScanner {
         }
     }
 
-    final private Callback callback;
     final private Pair<Integer, Integer> networkIP;
-    public PCScanner(Callback callback) throws Exception {
-        this.callback = callback;
-
+    private PCScanner() throws Exception {
         var thread = new NetworkIPSocketThread();
         thread.start();
         try {
@@ -63,15 +70,28 @@ public class PCScanner {
         networkIP = thread.getResponse();
     }
 
-    public <T> ArrayList<T> populate() {
+    public Boolean isScanning() {
+        return scanning;
+    }
+
+    public void populate() {
+        if (scanning)
+            return;
+
+        scanning = true;
         var broadcast = networkIP.first | networkIP.second;
-        var list = new ArrayList<T>();
         for (int i = networkIP.first + 1; i < broadcast; ++i) {
             byte[] raw =  ByteBuffer.allocate(4).putInt(i).array();
-            var o = callback.apply(raw);
-            if (o != null)
-                list.add((T) o);
+            var ip = (int)(raw[0] & 0xFF) + "."
+                    + (int)(raw[1] & 0xFF) + "."
+                    + (int)(raw[2] & 0xFF) + "."
+                    + (int)(raw[3] & 0xFF);
+            var echo = PCOption.echo(ip);
+            if (echo.startsWith("error"))
+                continue;
+            var echoContent = echo.split("[%]");
+            PCScanList.getInstance().add(new PCInfo(echoContent[0], ip, echoContent[2], true, echoContent[1]));
         }
-        return list;
+        scanning = false;
     }
 }

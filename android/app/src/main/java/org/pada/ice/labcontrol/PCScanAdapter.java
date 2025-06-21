@@ -12,13 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PCScanAdapter extends RecyclerView.Adapter<PCScanAdapter.ScannedPCViewHolder> {
-    private List<PCInfo> scannedPcList;
-    public PCScanAdapter(List<PCInfo> scannedPcList){
-        this.scannedPcList = scannedPcList;
-    }
-
     public void selectAll(boolean select){
-        for (PCInfo pc : scannedPcList) {
+        for (PCInfo pc : PCScanList.getInstance().getList()) {
             pc.setSelected(select);
         }
         notifyDataSetChanged();
@@ -33,7 +28,7 @@ public class PCScanAdapter extends RecyclerView.Adapter<PCScanAdapter.ScannedPCV
 
     @Override
     public void onBindViewHolder(ScannedPCViewHolder holder, int position){
-        PCInfo pc = scannedPcList.get(position);
+        PCInfo pc = PCScanList.getInstance().get(position);
         holder.textViewScannedIP.setText("IP: " + pc.ip);
         holder.getTextViewScannedMAC.setText("MAC: " + pc.mac);
 
@@ -46,7 +41,7 @@ public class PCScanAdapter extends RecyclerView.Adapter<PCScanAdapter.ScannedPCV
 
     @Override
     public int getItemCount(){
-        return scannedPcList.size();
+        return PCScanList.getInstance().size();
     }
 
     public static class ScannedPCViewHolder extends RecyclerView.ViewHolder{
@@ -65,7 +60,7 @@ public class PCScanAdapter extends RecyclerView.Adapter<PCScanAdapter.ScannedPCV
     public List<PCInfo> getSelectedPCs(){
         List<PCInfo> selected = new ArrayList<>();
 
-        for (PCInfo pc : scannedPcList) {
+        for (PCInfo pc : PCScanList.getInstance().getList()) {
             if (pc.isSelected()) {
                 selected.add(pc);
             }

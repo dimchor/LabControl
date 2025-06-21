@@ -2,9 +2,13 @@ package org.pada.ice.labcontrol;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.ThemedSpinnerAdapter;
 import android.widget.Toast;
 
 
@@ -15,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ScanActivity extends AppCompatActivity {
     private RecyclerView scanRecyclerView;
@@ -51,26 +57,45 @@ public class ScanActivity extends AppCompatActivity {
 //        scannedPcList.add(new PCInfo("192.168.1.3", "11:22:33:44:55:77"));
 
 
-        try {
-            var scanner = new PCScanner((byte[] raw) -> {
-                var ip = (int)(raw[0] & 0xFF) + "."
-                        + (int)(raw[1] & 0xFF) + "."
-                        + (int)(raw[2] & 0xFF) + "."
-                        + (int)(raw[3] & 0xFF);
-                var echo = PCOption.echo(ip);
-                if (echo.startsWith("error"))
-                    return null;
-                var echoContent = echo.split("[%]");
-                return new PCInfo(echoContent[1], echoContent[2]);
-            });
-            scannedPcList = scanner.populate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        pcScanAdapter = new PCScanAdapter();
+        scanRecyclerView.setAdapter(pcScanAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (PCScanList.getInstance().size() > 0)
+        {
+            var progressBar = (ProgressBar) findViewById(R.id.indeterminateBarScan);
+            progressBar.setVisibility(RecyclerView.INVISIBLE);
+            return;
         }
 
+        try {
+            if (PCScanner.getInstance().isScanning())
+                return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
-        pcScanAdapter = new PCScanAdapter(scannedPcList);
-        scanRecyclerView.setAdapter(pcScanAdapter);
+        var executor = Executors.newSingleThreadExecutor();
+        var handler = new Handler(Looper.getMainLooper());
+
+
+        executor.execute(() -> {
+            try {
+                PCScanner.getInstance().populate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            handler.post(() -> {
+                var progressBar = (ProgressBar) findViewById(R.id.indeterminateBarScan);
+                progressBar.setVisibility(RecyclerView.INVISIBLE);
+            });
+        });
+
     }
 
     //Menu

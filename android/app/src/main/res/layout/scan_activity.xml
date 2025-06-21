@@ -8,6 +8,7 @@
     tools:context=".ScanActivity"
     android:fitsSystemWindows="true">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -24,6 +25,12 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_gravity="start|center_vertical" />
+
+        <ProgressBar
+            android:id="@+id/indeterminateBarScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
 
     </androidx.appcompat.widget.Toolbar>
 
