@@ -63,6 +63,7 @@ public class AddPCActivity extends AppCompatActivity {
                             echoContent[1]));
                 }
                 // Toast.makeText(v.getContext(), "clicked" + PCList.getInstance().size(), Toast.LENGTH_SHORT).show();
+                PCStoreInfo.saveToFile(v.getContext(), PCList.getInstance().getList());
                 finish();
             }
         });

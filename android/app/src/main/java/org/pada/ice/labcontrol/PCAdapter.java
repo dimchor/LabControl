@@ -98,7 +98,6 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
                     default:
                 }
 
-//                Toast.makeText(clicked.getContext(), optionClicked + " selected for PC: " + pc.name, Toast.LENGTH_SHORT).show();
                 Toast.makeText(clicked.getContext(), pc.name + ": " + response, Toast.LENGTH_SHORT).show();
             });
 
