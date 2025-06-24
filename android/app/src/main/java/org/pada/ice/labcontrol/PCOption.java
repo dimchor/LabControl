@@ -17,6 +17,8 @@ public class PCOption {
         String response;
         String ip;
 
+        int timeout;
+
         final static int TIMEOUT = 3;
         final static int BUFSIZE = 1024;
 
@@ -24,6 +26,13 @@ public class PCOption {
         SocketThread(String ip, String command) {
             this.ip = ip;
             this.command = command;
+            this.timeout = TIMEOUT;
+        }
+
+        SocketThread(String ip, String command, int timeout) {
+            this.ip = ip;
+            this.command = command;
+            this.timeout = timeout;
         }
 
         String getResponse() {
@@ -33,8 +42,8 @@ public class PCOption {
         @Override
         public void run() {
             try (var socket = new Socket()) {
-                socket.connect(new InetSocketAddress(ip, 47001), TIMEOUT * 1000); // connect timeout
-                socket.setSoTimeout(TIMEOUT * 1000); // read timeout
+                socket.connect(new InetSocketAddress(ip, 47001), timeout * 1000); // connect timeout
+                socket.setSoTimeout(timeout * 1000); // read timeout
 
                 try (var out = new DataOutputStream(socket.getOutputStream());
                      var in = new DataInputStream(socket.getInputStream())) {
@@ -69,6 +78,20 @@ public class PCOption {
         return thread.getResponse();
     }
 
+    private static String runCommand(String ip, String command, int timeout) {
+        String response;
+
+        var thread = new SocketThread(ip, command, timeout);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.println(Log.INFO, "PCOption", e.toString());
+        }
+
+        return thread.getResponse();
+    }
+
     public static String shutdown(String ip) {
         return runCommand(ip, "shutdown");
     }
@@ -93,6 +116,10 @@ public class PCOption {
 
     public static String echo(String ip) {
         return runCommand(ip, "echo");
+    }
+
+    public static String echo(String ip, int timeout) {
+        return runCommand(ip, "echo", timeout);
     }
 
     public static String mac(String ip) {

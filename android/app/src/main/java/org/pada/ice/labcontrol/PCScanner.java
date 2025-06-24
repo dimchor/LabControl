@@ -86,7 +86,7 @@ public class PCScanner {
                     + (int)(raw[1] & 0xFF) + "."
                     + (int)(raw[2] & 0xFF) + "."
                     + (int)(raw[3] & 0xFF);
-            var echo = PCOption.echo(ip);
+            var echo = PCOption.echo(ip, 1);
             if (echo.startsWith("error"))
                 continue;
             var echoContent = echo.split("[%]");
