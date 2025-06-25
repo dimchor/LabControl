@@ -37,4 +37,8 @@ public class PCList {
     public ArrayList<PCInfo> getList(){
         return pcList;
     }
+
+    public void clear() {
+        pcList.clear();
+    }
 }

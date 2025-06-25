@@ -38,15 +38,13 @@ public class AddPCActivity extends AppCompatActivity {
             public void onClick(View v) {
                 var ipAddress = (EditText) findViewById(R.id.editTextInternetProtocolAddress);
                 var ipContent = ipAddress.getText().toString();
-                var name = (EditText) findViewById(R.id.editTextName);
-                var nameContent = name.getText().toString();
                 var mac = (EditText) findViewById(R.id.editTextMac);
                 var macContent = mac.getText().toString();
                 var echo = PCOption.echo(ipContent);
                 if (echo.startsWith("error")) {
                     Toast.makeText(v.getContext(), echo, Toast.LENGTH_SHORT).show();
                     PCList.getInstance().add(new PCInfo(
-                            nameContent.isEmpty() ? "unknown" : nameContent,
+                            "unknown",
                             ipContent,
                             macContent,
                             false,
@@ -54,7 +52,7 @@ public class AddPCActivity extends AppCompatActivity {
                 } else {
                     var echoContent = echo.split("[%]");
                     PCList.getInstance().add(new PCInfo(
-                            nameContent.isEmpty() ? echoContent[0] : nameContent,
+                            echoContent[0],
                             ipContent,
                             (macContent.isEmpty() && !(echoContent[2].equals("None"))
                                     ? echoContent[2]

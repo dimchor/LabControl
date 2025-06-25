@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.ThemedSpinnerAdapter;
 import android.widget.Toast;
@@ -32,6 +33,11 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_activity);
+
+        var window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.custom_black));
 
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -65,18 +71,18 @@ public class ScanActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        if (PCScanList.getInstance().size() > 0)
-        {
-            var progressBar = (ProgressBar) findViewById(R.id.indeterminateBarScan);
-            progressBar.setVisibility(RecyclerView.INVISIBLE);
-            return;
-        }
-
         try {
             if (PCScanner.getInstance().isScanning())
                 return;
         } catch (Exception e) {
             e.printStackTrace();
+            return;
+        }
+
+        if (PCScanList.getInstance().size() > 0)
+        {
+            var progressBar = (ProgressBar) findViewById(R.id.indeterminateBarScan);
+            progressBar.setVisibility(RecyclerView.INVISIBLE);
             return;
         }
 
@@ -92,7 +98,10 @@ public class ScanActivity extends AppCompatActivity {
             }
             handler.post(() -> {
                 var progressBar = (ProgressBar) findViewById(R.id.indeterminateBarScan);
+                if (progressBar == null)
+                    return;
                 progressBar.setVisibility(RecyclerView.INVISIBLE);
+                scanRecyclerView.getAdapter().notifyDataSetChanged();
             });
         });
 

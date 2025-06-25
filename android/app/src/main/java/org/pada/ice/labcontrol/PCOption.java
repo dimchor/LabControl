@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ThreadLocalRandom;
 
 import io.github.reines.wol.WakeOnLan;
 
@@ -64,6 +65,30 @@ public class PCOption {
             }
         }
     }
+
+    private static class WakeThread extends Thread {
+        private String response;
+        private String mac;
+
+        WakeThread(String mac) {
+            this.mac = mac;
+        }
+
+        @Override
+        public void run() {
+            try {
+                WakeOnLan.wake(mac);
+                response = "WOL packet sent to " + mac;
+            } catch (Exception e) {
+                e.printStackTrace();
+                response = "Failed to send WOL packet: " + e.toString();
+            }
+        }
+
+        public String getResponse() {
+            return response;
+        }
+    }
     private static String runCommand(String ip, String command) {
         String response;
 
@@ -105,13 +130,16 @@ public class PCOption {
     }
 
     public static String wakeOnLan(String mac) {
+        String response;
+        var thread = new WakeThread(mac);
+        thread.start();
         try {
-            WakeOnLan.wake(mac);
-            return "WOL packet sent to " + mac;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed to send WOL packet: " + e.toString();
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.println(Log.INFO, "PCOption", e.toString());
         }
+
+        return thread.getResponse();
     }
 
     public static String echo(String ip) {

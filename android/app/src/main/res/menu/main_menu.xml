@@ -16,6 +16,18 @@
     <item
         android:id="@+id/main_menu_about"
         android:title="About"
+        android:orderInCategory="5"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_menu_load_example"
+        android:title="Load example"
         android:orderInCategory="3"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_menu_clear"
+        android:title="Clear"
+        android:orderInCategory="4"
         app:showAsAction="never" />
 </menu>

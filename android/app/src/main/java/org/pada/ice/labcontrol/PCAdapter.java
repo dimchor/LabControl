@@ -21,11 +21,6 @@ import java.util.List;
 
 public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
-    private List<PCInfo> pcList;
-    public PCAdapter(List<PCInfo> pcList) {
-        this.pcList = pcList;
-    }
-
     @Override
     public PCViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pc_info, parent, false);
@@ -34,7 +29,7 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
     @Override
     public void onBindViewHolder(PCViewHolder holder, int position){
-        PCInfo pc = pcList.get(position);
+        PCInfo pc = PCList.getInstance().get(position);
         holder.textViewName.setText("Name: " + pc.name);
         holder.textViewIP.setText("IP: " + pc.ip);
         holder.textViewMAC.setText("MAC: " + pc.mac);
@@ -66,11 +61,11 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
                             .setMessage("Are you sure you want to delete the " + pc.name + "?")
                             .setPositiveButton("Yes", (confirmDialog, confirmWhich) -> {
                                 int deletePosition = holder.getAdapterPosition();
-                                pcList.remove(deletePosition);
+                                PCList.getInstance().remove(deletePosition);
                                 // maybe needed
 //                                PCList.getInstance().remove(deletePosition);
                                 notifyItemRemoved(deletePosition);
-                                PCStoreInfo.saveToFile(clicked.getContext(), new ArrayList<>(pcList));
+                                PCStoreInfo.saveToFile(clicked.getContext(), new ArrayList<>(PCList.getInstance().getList()));
                                 Toast.makeText(clicked.getContext(), "Deleted: " + pc.name, Toast.LENGTH_SHORT).show();
                             })
                             .setNegativeButton("Cancel", null)
@@ -113,7 +108,7 @@ public class PCAdapter extends RecyclerView.Adapter<PCAdapter.PCViewHolder> {
 
     @Override
     public int getItemCount(){
-        return pcList.size();
+        return PCList.getInstance().size();
     }
 
     public static class PCViewHolder extends RecyclerView.ViewHolder{
