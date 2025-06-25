@@ -25,20 +25,15 @@ def reboot():
     if ret:
         return f"error: unable to reboot: return value {ret}"
 
-    import socket
-import psutil
-
 def default_interface_mac():
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as soc:
-        # Test hostname
+    with socket.socket() as soc:
+        # Test url
         soc.connect(("uniwa.gr", 80))
         local_ip = soc.getsockname()[0]
 
-    # Iterate over IPs
     for interface, addrs in psutil.net_if_addrs().items():
         for addr in addrs:
             if addr.address == local_ip:
-                # Get the MAC address for the same interface
                 for addr in addrs:
                     if addr.family == psutil.AF_LINK:
                         return addr.address
