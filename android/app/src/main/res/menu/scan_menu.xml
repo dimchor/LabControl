@@ -15,14 +15,8 @@
         app:iconTint="@color/custom_turquoise"/>
 
     <item
-        android:id="@+id/scan_menu_subnet"
-        android:title="Subnet"
-        android:orderInCategory="2"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/scan_menu_add"
         android:title="Add"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         app:showAsAction="never" />
 </menu>

@@ -102,7 +102,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.main_menu_about) {
-            Toast.makeText(this, "About clicked", Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(this)
+                    .setTitle("About")
+                    .setMessage("This is a simple android app for managing and controlling multiple PCs on your network. Try the different options by clicking on one of them!")
+                    .setPositiveButton("OK", null)
+                    .show();
             return true;
         }
 

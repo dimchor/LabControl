@@ -122,12 +122,6 @@ public class ScanActivity extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             return true;
 
-        } else if (id == R.id.scan_menu_subnet) {
-            Toast.makeText(this, "Subnet clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, ScanActivity.class);
-            startActivity(intent);
-            return true;
-
         } else if (id == R.id.scan_menu_add) {
             ArrayList<PCInfo> selectedPCs = new ArrayList<>(pcScanAdapter.getSelectedPCs());
 
